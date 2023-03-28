@@ -6,6 +6,8 @@ const mongoose = require("mongoose");
 const app = express();
 const db = mongoose.connection;
 require("dotenv").config();
+const postController = require('./controllers/posts-controller.js')
+app.use('/', postController)
 //___________________
 //Port
 //___________________
