@@ -1,35 +1,37 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const Posts = require("../models/posts.js");
 const router = express();
+const Users = require('../models/users.js')
 router.use(cors());
 router.use(express());
 router.use(express.json());
 
+
 router.get("/", (req, res) => {
-  Posts.find({}).then((foundPost) => {
-    res.send(foundPost);
+  Users.find({}).then((foundUser) => {
+    res.send(foundUser);
   });
 });
 
 router.post("/", (req, res) => {
   console.log(req.body);
-  Posts.create(req.body).then((createdModel) => {
-    res.json(createdModel);
+  Users.create(req.body).then((createdUser) => {
+    res.json(createdUser);
   });
 });
 
 router.delete("/:id", (req, res) => {
-  Posts.findByIdAndRemove(req.params.id).then((deletedModel) => {
-    res.json(deletedModel);
+  Users.findByIdAndRemove(req.params.id).then((deletedUser) => {
+    res.json(deletedUser);
   });
 });
 
 router.put("/:id", (req, res) => {
-  Posts.findByIdAndUpdate(req.params.id, req.body).then((updatedModel) => {
-    res.json(updatedModel);
+  Users.findByIdAndUpdate(req.params.id, req.body).then((updatedUser) => {
+    res.json(updatedUser);
   });
 });
 
-module.exports = router
+
+module.exports = router;
