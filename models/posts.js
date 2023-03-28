@@ -5,7 +5,7 @@ const Posts = new Schema(
    {
     date:String,
     likes:Number,
-    imgage:[String],
+    image:[String],
     tags:[String],
     text:String
   } 
