@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const router = express();
 const Users = require('../models/users.js')
+const Posts = require("../models/posts.js")
 router.use(cors());
 router.use(express());
 router.use(express.json());
