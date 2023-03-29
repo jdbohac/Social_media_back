@@ -6,16 +6,16 @@ const Users = require('../models/users.js')
 router.use(cors());
 router.use(express());
 router.use(express.json());
+router.use(express.urlencoded({ extended: true }));
 
 
 router.get("/", (req, res) => {
   Users.find({}).then((foundUser) => {
-    res.send(foundUser);
+    res.json(foundUser);
   });
 });
 
 router.post("/", (req, res) => {
-  console.log(req.body);
   Users.create(req.body).then((createdUser) => {
     res.json(createdUser);
   });
@@ -35,3 +35,12 @@ router.put("/:id", (req, res) => {
 
 
 module.exports = router;
+
+
+// {
+// "user_name":"TonyHawk900",
+// "password":"InDyMcTwIsT",
+// "image":"broken",
+// "bio":"string",
+// "skills":["python","react",]
+// }
