@@ -1,10 +1,9 @@
 {
   "name": "social_media_back",
   "version": "1.0.0",
-  "engines":{
-  "node": "v19.7.0"
+  "engines": {
+    "node": "v19.7.0"
   },
-  "description": "",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -16,5 +15,15 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "mongoose": "^7.0.3"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jdbohac/Social_media_back.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/jdbohac/Social_media_back/issues"
+  },
+  "homepage": "https://github.com/jdbohac/Social_media_back#readme",
+  "description": ""
 }
