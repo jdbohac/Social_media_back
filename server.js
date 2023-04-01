@@ -21,7 +21,7 @@ const userController = require('./controllers/users-controller.js')
 
 
 app.use('/', postController)
-app.use('/user', userController)
+app.use('/', userController)
 app.use(cors())
 app.use(express());
 app.use(express.json())

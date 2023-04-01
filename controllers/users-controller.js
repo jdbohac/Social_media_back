@@ -17,31 +17,39 @@ router.post("/register", async (req, res)=>{
   const takenUsername = await User.findOne({username: user.username})
   
   if (takenUsername){
-    res.json({message: "Username has been already taken"})
+    return res.json({message: "Username has been already taken"})
   }else {
+    console.log(req.body.password)
     user.password = await bcrypt.hash(req.body.password, 10)
 
     const dbUser = new User({
+      name: user.name,
       username: user.username.toLowerCase(),
-      email: user.email.toLowerCase(),
       password: user.password
     })
 
+
     dbUser.save()
+    .then(() => console.log('Saved successfully'))
+    .catch((err) => console.log(err));
     res.json({message: "Success"})
   }
 })
 
 router.post("/login", (req, res)=>{
   const userLoggingIn = req.body
-
+  testUser = User.findOne({username: userLoggingIn.username})
+  // test = bcrypt.hash(testUser.password, 10)
   User.findOne({username: userLoggingIn.username}).then(dbUser => {
     if (!dbUser){
       return res.json({
         message: "Invalid Username or Password"
       })
-    }
-    bcrypt.compare(userLoggingIn.password || '', dbUser.password || '').then(isCorrect =>{
+    }    
+    console.log(userLoggingIn.password)
+    console.log(dbUser.password)
+  
+    bcrypt.compare(userLoggingIn.password, dbUser.password).then(isCorrect =>{
       if (isCorrect){
         const payload = {
           id: dbUser._id,
@@ -54,16 +62,16 @@ router.post("/login", (req, res)=>{
           // equivalent to one day
           {expiresIn: 86400}, 
           (err, token) =>{
-            if (err) return res.json({message: err})
+            // if (err) return res.json({message: err})
             return res.json({
               message: "Success",
               token: "Bearer" + token
             })
           }
         )
-      } else{
+      } else {
         return res.json({
-          message: "Invalid Username or Password"
+          message: "Invalid Username or Password!"
         })
       }
     })
