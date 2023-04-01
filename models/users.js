@@ -7,7 +7,6 @@ const Users = new mongoose.Schema(
   password: {type: String, required: true},
   image: String,
   bio: String,
-  skills: [String],
 }, {timestamps: true}
 );
 

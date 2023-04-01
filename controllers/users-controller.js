@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const router = express();
@@ -24,8 +25,10 @@ router.post("/register", async (req, res)=>{
 
     const dbUser = new User({
       name: user.name,
-      username: user.username.toLowerCase(),
-      password: user.password
+      username: user.username,
+      password: user.password, 
+      image: user.image,
+      bio: user.bio,
     })
 
 
@@ -62,16 +65,22 @@ router.post("/login", (req, res)=>{
           // equivalent to one day
           {expiresIn: 86400}, 
           (err, token) =>{
-            // if (err) return res.json({message: err})
+            if (err) {
+              console.log(process.env.JWT_SECRET)
+              return res.status(500).json({
+                message: "Error signing token",
+                error: err
+              });
+            }
             return res.json({
               message: "Success",
-              token: "Bearer" + token
+              token: "Bearer " + token
             })
           }
         )
       } else {
-        return res.json({
-          message: "Invalid Username or Password!"
+        return res.status(401).json({
+          message: "Authentication failed"
         })
       }
     })
@@ -82,7 +91,7 @@ function verifyJWT(req, res, next){
   const token = req.headers["x-access-token"]?.split(' ')[1]
 
   if(token) {
-    jwt.verify(token, process.env.PASSPORTSECRET, (err, decoded)=>{
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded)=>{
       if (err) return res.json({
         isLoggedIn: false,
         message: "Failed to Authenticate"
@@ -101,6 +110,25 @@ router.get("/getUsername", verifyJWT, (req, res)=>{
   res.json({isLoggedIn: true, username: req.user.username})
 })
 
+// =============== regular user routes for CRUD=================//
+
+router.get("/user", (req, res) => {
+  User.find({}).then((foundUser) => {
+    res.json(foundUser);
+  });
+});
+
+router.delete("/user/:id", (req, res) => {
+  User.findByIdAndRemove(req.params.id).then((deletdUser) => {
+    res.json(deletdUser);
+  });
+});
+
+router.put("/user/:id", (req, res) => {
+  User.findByIdAndUpdate(req.params.id, req.body).then((updatedUser) => {
+    res.json(updatedUser);
+  });
+});
 
 module.exports = router;
 
